@@ -1,6 +1,6 @@
 """PostgreSQL smoke test; runs in CI, skips locally without a database."""
-import pytest
 import psycopg
+import pytest
 
 from scientific_discovery.db import connect, initialize, upsert
 from scientific_discovery.ingest import validate_jsonl
