@@ -1,7 +1,7 @@
 """Information retrieval evaluation using fixed, labeled queries."""
 import json
 from pathlib import Path
-from typing import Callable
+from collections.abc import Callable
 
 
 def score_query(ranked_ids: list[str], relevant: set[str], k: int) -> dict:
