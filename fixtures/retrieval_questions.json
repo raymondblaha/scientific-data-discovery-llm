@@ -1,0 +1,45 @@
+[
+  {
+    "name": "dev_aerosol_sgp",
+    "split": "development",
+    "query": "aerosol optical depth southern great plains",
+    "site_code": "sgp",
+    "source": "synthetic",
+    "expected_ids": ["synthetic-arm-sgp-aerosol-2020"],
+    "difficulty": "answerable"
+  },
+  {
+    "name": "dev_cloud_fraction",
+    "split": "development",
+    "query": "cloud fraction southern great plains",
+    "site_code": "sgp",
+    "source": "synthetic",
+    "expected_ids": ["synthetic-arm-sgp-cloud-2021"],
+    "difficulty": "answerable"
+  },
+  {
+    "name": "dev_surface_temperature_ambiguous",
+    "split": "development",
+    "query": "surface temperature",
+    "source": "synthetic",
+    "expected_ids": ["synthetic-arm-sgp-radiation-2020", "synthetic-arm-trm-surface-temp-2019"],
+    "difficulty": "ambiguous"
+  },
+  {
+    "name": "heldout_precipitation_nsa",
+    "split": "held_out",
+    "query": "precipitation North Slope Alaska",
+    "site_name": "North Slope Alaska",
+    "source": "synthetic",
+    "expected_ids": ["synthetic-arm-nsa-precipitation-2021"],
+    "difficulty": "answerable"
+  },
+  {
+    "name": "heldout_no_match_arctic_ocean",
+    "split": "held_out",
+    "query": "marine iron deposition arctic ocean",
+    "source": "synthetic",
+    "expected_ids": [],
+    "difficulty": "no_match"
+  }
+]
