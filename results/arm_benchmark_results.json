@@ -1,0 +1,755 @@
+{
+  "corpus": {
+    "source": "ARM metadata endpoint",
+    "ingested_records": 500,
+    "synthetic_records": 0,
+    "judgment_status": "provisional",
+    "notes": "Manual relevance judgments were selected from the same ARM corpus and labeled provisional because they were not produced by a curated adjudication process."
+  },
+  "queries": [
+    {
+      "query": "ozone",
+      "expected_ids": [
+        "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_ozoneconc",
+        "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_ozoneconc",
+        "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_ozoneconc",
+        "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_ozoneconc",
+        "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_ozoneconc"
+      ],
+      "judgment_status": "provisional",
+      "split": "development"
+    },
+    {
+      "query": "temperature",
+      "expected_ids": [
+        "16_lwbroad_capt2int_derivmod_skintemp",
+        "16_lwnarrow_capt2int_derivmod_skintemp",
+        "16_macro_capt2int_derivmod_skintemp",
+        "16_sfcmet_capt2int_derivmod_skintemp",
+        "16_sfcflux_capt2int_derivmod_skintemp"
+      ],
+      "judgment_status": "provisional",
+      "split": "development"
+    },
+    {
+      "query": "wind",
+      "expected_ids": [
+        "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_horizwind",
+        "10330_tbsozoneground_lwbroad_tbsozoneground_other_horizwind",
+        "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_horizwind",
+        "10330_tbsozoneground_macro_tbsozoneground_other_horizwind",
+        "10330_tbsozoneground_macro_tbsozoneground_airborne_horizwind"
+      ],
+      "judgment_status": "provisional",
+      "split": "development"
+    },
+    {
+      "query": "cloud",
+      "expected_ids": [
+        "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+        "20_sfcmet_tropcldpropradheat_derivmod_liquidwc",
+        "20_sfcstate_tropcldpropradheat_derivmod_liquidwc",
+        "20_micro_tropcldpropradheat_derivmod_liquidwc",
+        "20_upperair_tropcldpropradheat_derivmod_liquidwc"
+      ],
+      "judgment_status": "provisional",
+      "split": "development"
+    },
+    {
+      "query": "precipitation",
+      "expected_ids": [
+        "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_atmmoist",
+        "10330_tbsozoneground_lwbroad_tbsozoneground_other_atmmoist",
+        "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_atmmoist",
+        "10330_tbsozoneground_lwnarrow_tbsozoneground_other_atmmoist",
+        "10330_tbsozoneground_macro_tbsozoneground_airborne_atmmoist"
+      ],
+      "judgment_status": "provisional",
+      "split": "development"
+    },
+    {
+      "query": "aerosol",
+      "expected_ids": [
+        "437_upperair_caps-ssa-comp_aerosol_aerosextinct",
+        "437_micro_caps-ssa-comp_aerosol_aerosextinct",
+        "437_macro_caps-ssa-comp_aerosol_aerosextinct",
+        "437_lwbroad_caps-ssa-comp_aerosol_aerosextinct",
+        "437_lwnarrow_caps-ssa-comp_aerosol_aerosextinct"
+      ],
+      "judgment_status": "provisional",
+      "split": "development"
+    },
+    {
+      "query": "quantum gravity atmospheric chemistry",
+      "expected_ids": [],
+      "judgment_status": "provisional",
+      "split": "held_out"
+    }
+  ],
+  "results_by_method": [
+    {
+      "method": "lexical",
+      "queries": 7,
+      "metrics": {
+        "precision_at_5": 0.485714,
+        "recall_at_5": 0.485714,
+        "hit_at_5": 0.857143,
+        "mrr_at_5": 0.6,
+        "ndcg_at_10": 0.65984
+      },
+      "latency_ms": {
+        "median": 1.488,
+        "p95": 4.779
+      },
+      "no_match_behavior": {
+        "accuracy": 1.0,
+        "count": 1
+      },
+      "per_question": [
+        {
+          "query": "ozone",
+          "expected_ids": [
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_ozoneconc"
+          ],
+          "retrieved_ids": [
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_micro_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_atmmoist",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_atmtemp",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_atmmoist"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 3.685,
+          "precision_at_5": 0.8,
+          "recall_at_5": 0.8,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 0.9896062251871525
+        },
+        {
+          "query": "temperature",
+          "expected_ids": [
+            "16_lwbroad_capt2int_derivmod_skintemp",
+            "16_lwnarrow_capt2int_derivmod_skintemp",
+            "16_macro_capt2int_derivmod_skintemp",
+            "16_sfcmet_capt2int_derivmod_skintemp",
+            "16_sfcflux_capt2int_derivmod_skintemp"
+          ],
+          "retrieved_ids": [
+            "16_lwbroad_capt2int_derivmod_skintemp",
+            "16_lwnarrow_capt2int_derivmod_skintemp",
+            "16_macro_capt2int_derivmod_skintemp",
+            "16_sfcflux_capt2int_derivmod_skintemp",
+            "16_sfcmet_capt2int_derivmod_skintemp",
+            "16_sfcstate_capt2int_derivmod_skintemp",
+            "16_swbroad_capt2int_derivmod_skintemp",
+            "16_upperair_capt2int_derivmod_skintemp",
+            "46_swbroad_varanal_derivmod_skintemp",
+            "46_upperair_varanal_derivmod_skintemp"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1.488,
+          "precision_at_5": 1.0,
+          "recall_at_5": 1.0,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 1.0
+        },
+        {
+          "query": "wind",
+          "expected_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_horizwind"
+          ],
+          "retrieved_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_sfcmet_horizwind",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_sfcmet_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_sfcmet_horizwind",
+            "10330_tbsozoneground_tracegas_tbsozoneground_other_horizwind"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1.415,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 0.9192613539759861
+        },
+        {
+          "query": "cloud",
+          "expected_ids": [
+            "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcmet_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcstate_tropcldpropradheat_derivmod_liquidwc",
+            "20_micro_tropcldpropradheat_derivmod_liquidwc",
+            "20_upperair_tropcldpropradheat_derivmod_liquidwc"
+          ],
+          "retrieved_ids": [
+            "46_lwbroad_varanal_derivmod_cldsize",
+            "46_swbroad_varanal_derivmod_cldsize",
+            "46_upperair_varanal_derivmod_cldsize",
+            "20_lwbroad_tropcldpropradheat_derivmod_icewc",
+            "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+            "20_micro_tropcldpropradheat_derivmod_icewc",
+            "20_micro_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcmet_tropcldpropradheat_derivmod_icewc",
+            "20_sfcmet_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcstate_tropcldpropradheat_derivmod_icewc"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1.86,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 0.2,
+          "ndcg_at_10": 0.34635587439312543
+        },
+        {
+          "query": "precipitation",
+          "expected_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_atmmoist"
+          ],
+          "retrieved_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_sfcmet_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_sfcmet_atmmoist",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_macro_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_macro_tbsozoneground_sfcmet_atmmoist",
+            "10330_tbsozoneground_micro_tbsozoneground_airborne_atmmoist"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1.317,
+          "precision_at_5": 0.8,
+          "recall_at_5": 0.8,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 0.943473299121064
+        },
+        {
+          "query": "aerosol",
+          "expected_ids": [
+            "437_upperair_caps-ssa-comp_aerosol_aerosextinct",
+            "437_micro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_macro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwbroad_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwnarrow_caps-ssa-comp_aerosol_aerosextinct"
+          ],
+          "retrieved_ids": [
+            "21_optrad_aeroforcsens_derivmod_aerosoptdepth",
+            "21_optrad_aeroforcsens_derivmod_aerosoptical",
+            "21_swnarrow_aeroforcsens_derivmod_aerosoptdepth",
+            "21_swnarrow_aeroforcsens_derivmod_aerosoptical",
+            "21_optrad_aeroforcsens_derivmod_irradswnbtotdn",
+            "21_swnarrow_aeroforcsens_derivmod_irradswnbtotdn",
+            "437_lwbroad_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwnarrow_caps-ssa-comp_aerosol_aerosextinct",
+            "437_macro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_micro_caps-ssa-comp_aerosol_aerosextinct"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1.783,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "hit_at_5": 0.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_10": 0.42018321507940454
+        },
+        {
+          "query": "quantum gravity atmospheric chemistry",
+          "expected_ids": [],
+          "retrieved_ids": [],
+          "judgment_status": "provisional",
+          "split": "held_out",
+          "latency_ms": 1.161,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_10": 0.0
+        }
+      ]
+    },
+    {
+      "method": "semantic",
+      "queries": 7,
+      "metrics": {
+        "precision_at_5": 0.285714,
+        "recall_at_5": 0.285714,
+        "hit_at_5": 0.428571,
+        "mrr_at_5": 0.357143,
+        "ndcg_at_10": 0.328891
+      },
+      "latency_ms": {
+        "median": 1873.871,
+        "p95": 1964.624
+      },
+      "no_match_behavior": {
+        "accuracy": 0.0,
+        "count": 1
+      },
+      "per_question": [
+        {
+          "query": "ozone",
+          "expected_ids": [
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_ozoneconc"
+          ],
+          "retrieved_ids": [
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_atmmoist",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_atmmoist",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_atmmoist",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_atmmoist",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_atmmoist",
+            "10330_tbsozonesonde_macro_tbsozonesonde_airborne_atmtemp",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_airborne_atmmoist"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1894.529,
+          "precision_at_5": 0.4,
+          "recall_at_5": 0.4,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 0.5,
+          "ndcg_at_10": 0.4621520097001457
+        },
+        {
+          "query": "temperature",
+          "expected_ids": [
+            "16_lwbroad_capt2int_derivmod_skintemp",
+            "16_lwnarrow_capt2int_derivmod_skintemp",
+            "16_macro_capt2int_derivmod_skintemp",
+            "16_sfcmet_capt2int_derivmod_skintemp",
+            "16_sfcflux_capt2int_derivmod_skintemp"
+          ],
+          "retrieved_ids": [
+            "118_sfcmet_dc8-nasa_airborne_atmtemp",
+            "118_upperair_dc8-nasa_airborne_atmtemp",
+            "20_sfcmet_tropcldpropradheat_derivmod_atmtemp",
+            "20_sfcstate_tropcldpropradheat_derivmod_atmtemp",
+            "46_upperair_varanal_derivmod_skintemp",
+            "20_micro_tropcldpropradheat_derivmod_atmtemp",
+            "20_swbroad_tropcldpropradheat_derivmod_atmtemp",
+            "20_lwbroad_tropcldpropradheat_derivmod_atmtemp",
+            "46_swbroad_varanal_derivmod_skintemp",
+            "46_upperair_varanal_derivmod_atmtemp"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1963.473,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "hit_at_5": 0.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_10": 0.0
+        },
+        {
+          "query": "wind",
+          "expected_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_horizwind"
+          ],
+          "retrieved_ids": [
+            "46_swbroad_varanal_derivmod_horizwind",
+            "46_lwbroad_varanal_derivmod_horizwind",
+            "16_sfcflux_capt2int_derivmod_horizwind",
+            "16_swbroad_capt2int_derivmod_horizwind",
+            "16_sfcmet_capt2int_derivmod_horizwind",
+            "16_sfcstate_capt2int_derivmod_horizwind",
+            "16_upperair_capt2int_derivmod_horizwind",
+            "16_lwnarrow_capt2int_derivmod_horizwind",
+            "16_macro_capt2int_derivmod_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_other_horizwind"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1710.505,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "hit_at_5": 0.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_10": 0.09803928583135704
+        },
+        {
+          "query": "cloud",
+          "expected_ids": [
+            "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcmet_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcstate_tropcldpropradheat_derivmod_liquidwc",
+            "20_micro_tropcldpropradheat_derivmod_liquidwc",
+            "20_upperair_tropcldpropradheat_derivmod_liquidwc"
+          ],
+          "retrieved_ids": [
+            "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcstate_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcmet_tropcldpropradheat_derivmod_liquidwc",
+            "20_micro_tropcldpropradheat_derivmod_liquidwc",
+            "20_upperair_tropcldpropradheat_derivmod_liquidwc",
+            "20_lwbroad_tropcldpropradheat_derivmod_clouddrop",
+            "20_lwbroad_tropcldpropradheat_derivmod_icewc",
+            "20_sfcstate_tropcldpropradheat_derivmod_icewc",
+            "20_micro_tropcldpropradheat_derivmod_icewc",
+            "20_sfcstate_tropcldpropradheat_derivmod_clouddrop"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1961.556,
+          "precision_at_5": 1.0,
+          "recall_at_5": 1.0,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 1.0
+        },
+        {
+          "query": "precipitation",
+          "expected_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_atmmoist"
+          ],
+          "retrieved_ids": [
+            "20_sfcstate_tropcldpropradheat_derivmod_liquidwc",
+            "20_upperair_tropcldpropradheat_derivmod_liquidwc",
+            "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+            "20_micro_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcmet_tropcldpropradheat_derivmod_liquidwc",
+            "17_macro_icewc-ret_derivmod_icewc",
+            "20_micro_tropcldpropradheat_derivmod_atmmoist",
+            "17_macro_icewc-ret_derivmod_icewaterpath",
+            "17_upperair_icewc-ret_derivmod_icewc",
+            "20_swbroad_tropcldpropradheat_derivmod_atmmoist"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1796.186,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "hit_at_5": 0.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_10": 0.0
+        },
+        {
+          "query": "aerosol",
+          "expected_ids": [
+            "437_upperair_caps-ssa-comp_aerosol_aerosextinct",
+            "437_micro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_macro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwbroad_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwnarrow_caps-ssa-comp_aerosol_aerosextinct"
+          ],
+          "retrieved_ids": [
+            "437_upperair_caps-ssa-comp_aerosol_aerosextinct",
+            "437_upperair_caps-ssa-comp_aerosol_aerosscatter",
+            "437_micro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_macro_caps-ssa-comp_aerosol_aerosscatter",
+            "437_macro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_micro_caps-ssa-comp_aerosol_aerosscatter",
+            "437_sfcmet_caps-ssa-comp_aerosol_aerosextinct",
+            "437_swnarrow_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwnarrow_caps-ssa-comp_aerosol_aerosextinct",
+            "437_swbroad_caps-ssa-comp_aerosol_aerosextinct"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1873.871,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 0.7420427805456776
+        },
+        {
+          "query": "quantum gravity atmospheric chemistry",
+          "expected_ids": [],
+          "retrieved_ids": [
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_micro_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozoneground_tracegas_tbsozoneground_sfcmet_ozoneconc",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_sfcmet_ozoneconc",
+            "10330_tbsozoneground_upperair_tbsozoneground_sfcmet_ozoneconc"
+          ],
+          "judgment_status": "provisional",
+          "split": "held_out",
+          "latency_ms": 1714.842,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "hit_at_5": 0.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_10": 0.0
+        }
+      ]
+    },
+    {
+      "method": "hybrid",
+      "queries": 7,
+      "metrics": {
+        "precision_at_5": 0.542857,
+        "recall_at_5": 0.542857,
+        "hit_at_5": 0.857143,
+        "mrr_at_5": 0.742857,
+        "ndcg_at_10": 0.702175
+      },
+      "latency_ms": {
+        "median": 1861.548,
+        "p95": 2178.851
+      },
+      "no_match_behavior": {
+        "accuracy": 0.0,
+        "count": 1
+      },
+      "per_question": [
+        {
+          "query": "ozone",
+          "expected_ids": [
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_ozoneconc"
+          ],
+          "retrieved_ids": [
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_atmprof_atmmoist",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_atmmoist",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_atmprof_atmmoist",
+            "10330_tbsozonesonde_lwbroad_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_atmmoist",
+            "10330_tbsozonesonde_lwnarrow_tbsozonesonde_airborne_ozoneconc",
+            "10330_tbsozonesonde_macro_tbsozonesonde_atmprof_atmmoist"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1956.08,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 0.8995023444012693
+        },
+        {
+          "query": "temperature",
+          "expected_ids": [
+            "16_lwbroad_capt2int_derivmod_skintemp",
+            "16_lwnarrow_capt2int_derivmod_skintemp",
+            "16_macro_capt2int_derivmod_skintemp",
+            "16_sfcmet_capt2int_derivmod_skintemp",
+            "16_sfcflux_capt2int_derivmod_skintemp"
+          ],
+          "retrieved_ids": [
+            "46_upperair_varanal_derivmod_skintemp",
+            "46_swbroad_varanal_derivmod_skintemp",
+            "16_sfcstate_capt2int_derivmod_skintemp",
+            "118_sfcmet_dc8-nasa_airborne_atmtemp",
+            "16_lwbroad_capt2int_derivmod_skintemp",
+            "118_upperair_dc8-nasa_airborne_atmtemp",
+            "16_lwnarrow_capt2int_derivmod_skintemp",
+            "16_macro_capt2int_derivmod_skintemp",
+            "20_sfcmet_tropcldpropradheat_derivmod_atmtemp",
+            "16_sfcflux_capt2int_derivmod_skintemp"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1701.125,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 0.2,
+          "ndcg_at_10": 0.4492908974688346
+        },
+        {
+          "query": "wind",
+          "expected_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_horizwind"
+          ],
+          "retrieved_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_other_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_macro_tbsozoneground_other_horizwind",
+            "16_sfcflux_capt2int_derivmod_horizwind",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_horizwind",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_sfcmet_horizwind",
+            "16_sfcmet_capt2int_derivmod_horizwind",
+            "16_swbroad_capt2int_derivmod_horizwind"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1678.355,
+          "precision_at_5": 0.8,
+          "recall_at_5": 0.8,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 0.943473299121064
+        },
+        {
+          "query": "cloud",
+          "expected_ids": [
+            "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcmet_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcstate_tropcldpropradheat_derivmod_liquidwc",
+            "20_micro_tropcldpropradheat_derivmod_liquidwc",
+            "20_upperair_tropcldpropradheat_derivmod_liquidwc"
+          ],
+          "retrieved_ids": [
+            "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+            "20_lwbroad_tropcldpropradheat_derivmod_icewc",
+            "20_micro_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcmet_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcstate_tropcldpropradheat_derivmod_liquidwc",
+            "20_micro_tropcldpropradheat_derivmod_icewc",
+            "20_upperair_tropcldpropradheat_derivmod_liquidwc",
+            "20_sfcstate_tropcldpropradheat_derivmod_icewc",
+            "20_sfcmet_tropcldpropradheat_derivmod_icewc",
+            "20_lwbroad_tropcldpropradheat_derivmod_clouddrop"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 2095.312,
+          "precision_at_5": 0.8,
+          "recall_at_5": 0.8,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 0.8990671370233444
+        },
+        {
+          "query": "precipitation",
+          "expected_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_atmmoist",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_other_atmmoist",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_atmmoist"
+          ],
+          "retrieved_ids": [
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_atmmoist",
+            "20_sfcstate_tropcldpropradheat_derivmod_liquidwc",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_atmmoist",
+            "20_upperair_tropcldpropradheat_derivmod_liquidwc",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_sfcmet_atmmoist",
+            "20_lwbroad_tropcldpropradheat_derivmod_liquidwc",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_atmmoist",
+            "20_micro_tropcldpropradheat_derivmod_liquidwc",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_other_atmmoist",
+            "20_sfcmet_tropcldpropradheat_derivmod_liquidwc"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1861.548,
+          "precision_at_5": 0.4,
+          "recall_at_5": 0.4,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 0.7238911047912078
+        },
+        {
+          "query": "aerosol",
+          "expected_ids": [
+            "437_upperair_caps-ssa-comp_aerosol_aerosextinct",
+            "437_micro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_macro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwbroad_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwnarrow_caps-ssa-comp_aerosol_aerosextinct"
+          ],
+          "retrieved_ids": [
+            "437_micro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_macro_caps-ssa-comp_aerosol_aerosextinct",
+            "437_upperair_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwnarrow_caps-ssa-comp_aerosol_aerosextinct",
+            "437_lwbroad_caps-ssa-comp_aerosol_aerosextinct",
+            "437_sfcmet_caps-ssa-comp_aerosol_aerosextinct",
+            "437_swnarrow_caps-ssa-comp_aerosol_aerosextinct",
+            "437_swbroad_caps-ssa-comp_aerosol_aerosextinct",
+            "437_optrad_caps-ssa-comp_aerosol_aerosextinct",
+            "437_sfcstate_caps-ssa-comp_aerosol_aerosextinct"
+          ],
+          "judgment_status": "provisional",
+          "split": "development",
+          "latency_ms": 1666.395,
+          "precision_at_5": 1.0,
+          "recall_at_5": 1.0,
+          "hit_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_10": 1.0
+        },
+        {
+          "query": "quantum gravity atmospheric chemistry",
+          "expected_ids": [],
+          "retrieved_ids": [
+            "10330_tbsozoneground_tracegas_tbsozoneground_sfcmet_atmpres",
+            "10330_tbsozoneground_tracegas_tbsozoneground_other_atmpres",
+            "10330_tbsozoneground_macro_tbsozoneground_airborne_atmpres",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_airborne_atmpres",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_airborne_atmpres",
+            "10330_tbsozoneground_upperair_tbsozoneground_airborne_atmpres",
+            "10330_tbsozoneground_upperair_tbsozoneground_sfcmet_atmpres",
+            "10330_tbsozoneground_macro_tbsozoneground_other_atmpres",
+            "10330_tbsozoneground_lwbroad_tbsozoneground_other_atmpres",
+            "10330_tbsozoneground_lwnarrow_tbsozoneground_other_atmpres"
+          ],
+          "judgment_status": "provisional",
+          "split": "held_out",
+          "latency_ms": 1907.824,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "hit_at_5": 0.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_10": 0.0
+        }
+      ]
+    }
+  ]
+}

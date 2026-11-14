@@ -11,6 +11,7 @@ from app.validate import validate_record
 from scientific_discovery.db import connect as canonical_connect
 from scientific_discovery.db import initialize as canonical_initialize
 from scientific_discovery.db import upsert as canonical_upsert
+from scientific_discovery.db import upsert_embeddings
 from scientific_discovery.ingest import validate_jsonl
 from scientific_discovery.search import keyword_search
 
@@ -62,7 +63,8 @@ def test_malformed_metadata_is_reported_as_error():
 
 def test_duplicate_ingestion_keeps_count_stable():
     with canonical_connect() as conn:
-        conn.execute("DROP TABLE IF EXISTS datasets")
+        conn.execute("DROP TABLE IF EXISTS dataset_embeddings CASCADE")
+        conn.execute("DROP TABLE IF EXISTS datasets CASCADE")
         canonical_initialize(conn)
         rows = load_fixture_records()
         first = canonical_upsert(conn, [normalize_record(row) for row in rows])
@@ -78,6 +80,50 @@ def test_empty_keyword_search_returns_no_rows():
         canonical_initialize(conn)
         rows = keyword_search(conn, "definitely-not-present-anywhere", limit=5)
         assert rows == []
+
+
+def test_upsert_embeddings_skips_unchanged_records():
+    with canonical_connect() as conn:
+        conn.execute("DROP TABLE IF EXISTS dataset_embeddings CASCADE")
+        conn.execute("DROP TABLE IF EXISTS datasets CASCADE")
+        canonical_initialize(conn)
+        rows = load_fixture_records()
+        canonical_upsert(conn, [normalize_record(row) for row in rows])
+
+        first_pass = upsert_embeddings(conn, [normalize_record(row) for row in rows])
+        second_pass = upsert_embeddings(conn, [normalize_record(row) for row in rows])
+
+        assert first_pass == len(rows)
+        assert second_pass == 0
+        count = conn.execute("SELECT COUNT(*) FROM dataset_embeddings").fetchone()[0]
+        assert count == len(rows)
+
+
+def test_upsert_embeddings_updates_changed_metadata():
+    with canonical_connect() as conn:
+        conn.execute("DROP TABLE IF EXISTS dataset_embeddings CASCADE")
+        conn.execute("DROP TABLE IF EXISTS datasets CASCADE")
+        canonical_initialize(conn)
+        rows = load_fixture_records()
+        first_row = normalize_record(rows[0])
+        canonical_upsert(conn, [first_row])
+        upsert_embeddings(conn, [first_row])
+
+        original_hash = conn.execute(
+            "SELECT text_hash FROM dataset_embeddings WHERE dataset_id = %s",
+            (first_row["source_identifier"],),
+        ).fetchone()[0]
+
+        changed = dict(first_row)
+        changed["description"] = "updated description for verification"
+        insertion_count = upsert_embeddings(conn, [changed])
+
+        assert insertion_count == 1
+        updated_hash = conn.execute(
+            "SELECT text_hash FROM dataset_embeddings WHERE dataset_id = %s",
+            (first_row["source_identifier"],),
+        ).fetchone()[0]
+        assert updated_hash != original_hash
 
 
 def test_database_import_search_and_evaluation_work():

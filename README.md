@@ -1,26 +1,28 @@
 # Scientific Data Discovery LLM Portfolio Project
 
-This repository implements the first milestone of a reproducible scientific metadata discovery system. It focuses on public metadata acquisition, validation, PostgreSQL storage, keyword retrieval, and benchmark evaluation. It intentionally excludes LLM logic, embeddings, vector databases, and dashboards.
+This repository implements a reproducible scientific metadata discovery system focused on public metadata acquisition, validation, PostgreSQL storage, keyword search, semantic retrieval, hybrid retrieval, and benchmark evaluation. It intentionally excludes LLM logic, chat interfaces, vector databases beyond pgvector, and dashboards.
 
 ## Scope and architecture
 
-- Acquisition: ARM public metadata via https://adc.arm.gov/elastic/metadata/_search and a synthetic fixture for offline evaluation.
+- Acquisition: ARM public metadata via https://adc.arm.gov/elastic/metadata/_search and synthetic fixtures for offline evaluation.
 - Canonical implementation: src/scientific_discovery/
 - Compatibility layer: app/ re-exports the canonical modules without duplicating business logic.
-- Validation: required field checks, URL validation, and malformed JSONL handling.
-- Storage: PostgreSQL tables for normalized metadata and raw metadata retention.
-- Retrieval: PostgreSQL full-text search with keyword and site filters.
-- Evaluation: deterministic synthetic benchmark for Precision@5, Recall@5, Hit@5, and MRR@5.
+- Validation: required field checks, URL validation, malformed JSONL handling, and duplicate detection.
+- Storage: PostgreSQL with pgvector support for normalized metadata, raw metadata retention, and embedding storage.
+- Retrieval: PostgreSQL full-text search, semantic similarity search, and reciprocal-rank fusion hybrid retrieval.
+- Evaluation: deterministic synthetic benchmarks plus a live ARM benchmark exported to JSON, CSV, and a chart.
 
 ## Verified implementation status
 
 The following were verified in the current environment:
 
-- Real ARM metadata ingestion succeeded for 25 records from the public ARM metadata endpoint.
-- Repeated ingestion with the same source produced the same 25-row dataset count, confirming idempotence.
-- PostgreSQL-backed keyword retrieval returned ranked ARM records for queries such as `temperature`, `cloud`, and `precipitation`.
-- The canonical CLI executed successfully for validation, synthetic ingestion, and benchmark evaluation.
-- The final repository state includes the canonical package under src/scientific_discovery and compatibility wrappers under app/ only.
+- PostgreSQL + pgvector initialized successfully with Docker Compose, and the database-backed pipeline executed on a live ARM corpus.
+- Real ARM metadata ingestion succeeded for 500 records from the public metadata endpoint.
+- Embedding generation using `sentence-transformers/all-MiniLM-L6-v2` produced valid 384-dimensional vectors and stored them in the `dataset_embeddings` table.
+- Rerunning embedding generation for unchanged records was verified to skip updates and leave the row count stable.
+- Lexical, semantic, and hybrid searches all executed successfully against the real PostgreSQL database.
+- The canonical CLI and benchmark script executed successfully for live ARM verification and export.
+- The project remains scoped to the scientific metadata system; the Colibri workspace and model cache remain excluded from tracking.
 
 ## Setup
 
@@ -42,6 +44,12 @@ docker compose up -d postgres
 
 ## Reproduction commands
 
+Start PostgreSQL:
+
+```bash
+docker compose up -d postgres
+```
+
 Validate a JSONL file:
 
 ```bash
@@ -54,16 +62,53 @@ Import the synthetic fixture:
 python -m scientific_discovery.cli ingest --source synthetic
 ```
 
-Import live ARM metadata (public metadata index, limit 25):
+Import live ARM metadata (public metadata index, limit 500):
 
 ```bash
-python -m scientific_discovery.cli ingest --source arm --limit 25
+python - <<'PY'
+from scientific_discovery.db import connect, initialize, upsert
+from scientific_discovery.ingest import fetch_arm_metadata, normalize_arm_record
+
+conn = connect()
+initialize(conn)
+rows = fetch_arm_metadata(limit=500)
+records = [normalize_arm_record(row) for row in rows]
+print(upsert(conn, records))
+conn.close()
+PY
+```
+
+Generate and store sentence-transformer embeddings for a loaded corpus:
+
+```bash
+python - <<'PY'
+from scientific_discovery.db import connect, upsert_embeddings
+from scientific_discovery.ingest import fetch_arm_metadata, normalize_arm_record
+
+conn = connect()
+rows = fetch_arm_metadata(limit=500)
+records = [normalize_arm_record(row) for row in rows]
+print(upsert_embeddings(conn, records))
+conn.close()
+PY
 ```
 
 Keyword search:
 
 ```bash
-python -m scientific_discovery.cli search "cloud fraction" --limit 10
+python -m scientific_discovery.cli search "cloud" --mode lexical --limit 10
+```
+
+Semantic search:
+
+```bash
+python -m scientific_discovery.cli search "cloud" --mode semantic --limit 10
+```
+
+Hybrid search:
+
+```bash
+python -m scientific_discovery.cli search "cloud" --mode hybrid --limit 10
 ```
 
 Synthetic retrieval evaluation:
@@ -72,16 +117,23 @@ Synthetic retrieval evaluation:
 python -m scientific_discovery.cli evaluate-command --path fixtures/retrieval_questions.json --k 5
 ```
 
-## Synthetic benchmark results
+Real ARM retrieval benchmark with export to JSON, CSV, and a comparison chart:
 
-The benchmark output from the current project fixture is:
+```bash
+python scripts/real_arm_benchmark.py
+```
 
-- Precision@5: 0.2
-- Recall@5: 0.8
-- Hit@5: 0.8
-- MRR@5: 0.8
+## Real ARM benchmark results
 
-These are synthetic benchmark results only. They are not measured real-world retrieval accuracy for the ARM catalog or for domain-specific relevance judgments because the repository does not yet establish a curated real-world relevance set for ARM metadata.
+The live benchmark was generated from 500 ARM metadata records and compared lexical, semantic, and hybrid retrieval using provisional relevance judgments selected from the same corpus.
+
+- Hybrid retrieval: Precision@5 = 0.542857, Recall@5 = 0.542857, Hit@5 = 0.857143, MRR@5 = 0.742857, nDCG@10 = 0.702175, median latency = 1861.548 ms, p95 latency = 2178.851 ms
+- Lexical retrieval: Precision@5 = 0.485714, Recall@5 = 0.485714, Hit@5 = 0.857143, MRR@5 = 0.6, nDCG@10 = 0.65984, median latency = 1.488 ms, p95 latency = 4.779 ms
+- Semantic retrieval: Precision@5 = 0.285714, Recall@5 = 0.285714, Hit@5 = 0.428571, MRR@5 = 0.357143, nDCG@10 = 0.328891, median latency = 1873.871 ms, p95 latency = 1964.624 ms
+
+These results are provisional because the relevance labels were curated manually from the live corpus rather than through a full adjudicated benchmark process. The benchmark artifacts are stored in `results/arm_benchmark_results.json`, `results/arm_benchmark_results.csv`, and `results/arm_retrieval_comparison.png`.
+
+The benchmark intentionally covers a 500-record ARM sample and does not claim broad scientific generalization. The query set includes one held-out no-match query, and the manual judgments are stored as provisional rather than canonical ground truth.
 
 ## Test coverage and validation
 
@@ -91,7 +143,7 @@ Automated verification command:
 pytest -q
 ```
 
-Current result: 7 passing tests.
+Current project result: 16 passing tests, including the PostgreSQL integration test file executed against the live local database.
 
 The suite covers:
 
@@ -102,13 +154,15 @@ The suite covers:
 - date-overlap logic
 - PostgreSQL integration/search behavior
 - retrieval evaluation metrics
+- embedding idempotence and hybrid retrieval regression checks
 
 ## Known limitations
 
-- No real ARM relevance judgments have been established; the synthetic benchmark is intentionally small and not representative of production ranking quality.
-- The ARM endpoint is a public metadata catalog, not a complete dataset-download service.
-- The system does not yet include an LLM, embedding model, vector database, or dashboard.
-- Database-backed workflows require a local PostgreSQL instance.
+- The ARM endpoint is a public metadata catalog and does not provide a curated adjudicated relevance set; the benchmark judgments are provisional.
+- The 500-record benchmark is a sample used for reproducible retrieval validation, not a production-scale scientific benchmark.
+- The semantic retrieval path depends on the local `sentence-transformers` model and a CPU-friendly configuration.
+- The project does not yet include an LLM, vector database aside from pgvector, or a dashboard.
+- Database-backed workflows require a local PostgreSQL instance started with Docker Compose.
 
 ## Data retention and schema
 
@@ -117,5 +171,5 @@ Each imported record retains the source identifier, title, description, source U
 ## Reproducibility notes
 
 - The application depends on documented fixture files and public ARM metadata access.
-- The database is started with Docker Compose using the local default PostgreSQL credentials in the example environment file.
-- No restricted credentials or private ARM access tokens are committed to the repository.
+- The local database is started with Docker Compose using the default PostgreSQL credentials in the example environment file.
+- No restricted credentials, model weights, or caches are tracked in the repository; the external Colibri workspace and model cache remain outside the project path and are ignored by Git.

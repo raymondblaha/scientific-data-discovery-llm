@@ -11,7 +11,16 @@ from datetime import date
 from typing import Any
 
 import psycopg
+from pgvector import Vector
+from pgvector.psycopg import register_vector
 from psycopg.rows import dict_row
+
+from .embeddings import (
+    build_metadata_text,
+    generate_embeddings,
+    reciprocal_rank_fusion,
+    to_retrieval_result,
+)
 
 
 def _parse_iso(value: Any) -> date | None:
@@ -221,3 +230,108 @@ def keyword_search(conn, query: str, limit: int = 10, source: str | None = None,
         cur.execute(sql, params)
         rows = cur.fetchall()
         return [dict(row) for row in rows]
+
+
+def semantic_search(conn: psycopg.Connection, query: str, limit: int = 10, source: str | None = None, site_code: str | None = None, site_name: str | None = None, model_name: str | None = None, device: str | None = None) -> list[dict[str, Any]]:
+    if not query or not query.strip():
+        return []
+    if not 1 <= limit <= 100:
+        raise ValueError("limit must be between 1 and 100")
+
+    try:
+        register_vector(conn)
+    except (AttributeError, TypeError, ValueError):
+        pass
+
+    if not _table_exists(conn, "dataset_embeddings"):
+        return []
+
+    query_vector = Vector(generate_embeddings([query], model_name=model_name, device=device)[0])
+    clauses = ["1 = 1"]
+    if source:
+        clauses.append("d.source = %s")
+    if site_code:
+        clauses.append("d.site_code = %s")
+    if site_name:
+        clauses.append("d.site_name = %s")
+
+    sql = f"""
+        SELECT d.dataset_id, d.title, d.description, d.source, d.landing_page,
+               d.source_identifier, d.source_url, d.site_code, d.site_name,
+               d.start_date, d.end_date, d.synthetic,
+               1 - (e.embedding <=> %s) AS similarity
+        FROM dataset_embeddings e
+        JOIN datasets d ON d.dataset_id = e.dataset_id
+        WHERE {' AND '.join(clauses)}
+        ORDER BY e.embedding <=> %s
+        LIMIT %s
+    """
+    # param order must match placeholder positions
+    param_values: list[Any] = [query_vector]
+    if source is not None:
+        param_values.append(source)
+    if site_code is not None:
+        param_values.append(site_code)
+    if site_name is not None:
+        param_values.append(site_name)
+    param_values.extend([query_vector, limit])
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(sql, param_values)
+        rows = cur.fetchall()
+
+    results: list[dict[str, Any]] = []
+    for index, row in enumerate(rows, start=1):
+        record = dict(row)
+        score = float(record.get("similarity", 0.0) or 0.0)
+        record["score"] = score
+        record["text"] = build_metadata_text(record)
+        structured = to_retrieval_result(record, index, semantic_score=score, source_url=record.get("source_url") or record.get("landing_page"))
+        structured["score"] = score
+        structured["text"] = record["text"]
+        results.append(structured)
+    return results
+
+
+def hybrid_search(conn: psycopg.Connection, query: str, limit: int = 10, source: str | None = None, site_code: str | None = None, site_name: str | None = None, rrf_constant: int = 60, model_name: str | None = None, device: str | None = None) -> list[dict[str, Any]]:
+    lexical_results = keyword_search(conn, query, limit=max(limit, 20), source=source, site_code=site_code, site_name=site_name)
+    semantic_results = semantic_search(conn, query, limit=max(limit, 20), source=source, site_code=site_code, site_name=site_name, model_name=model_name, device=device)
+    fused = reciprocal_rank_fusion(lexical_results, semantic_results, k=limit, rrf_constant=rrf_constant)
+
+    output: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for rank, item in enumerate(fused[:limit], start=1):
+        dataset_id = item["dataset_id"]
+        if dataset_id in seen:
+            continue
+        seen.add(dataset_id)
+
+        record = {
+            "dataset_id": dataset_id,
+            "source": item.get("source"),
+            "source_identifier": dataset_id,
+            "source_url": item.get("source_url"),
+            "rank": rank,
+            "rrf_score": item["score"],
+            "score": item["score"],
+            "provenance": {
+                "source": item.get("source"),
+                "source_identifier": dataset_id,
+                "source_url": item.get("source_url"),
+            },
+        }
+
+        for candidate in lexical_results + semantic_results:
+            candidate_id = candidate.get("dataset_id") or candidate.get("source_identifier") or candidate.get("id")
+            if candidate_id == dataset_id:
+                record.update({
+                    "title": candidate.get("title"),
+                    "description": candidate.get("description") or "",
+                    "site_code": candidate.get("site_code"),
+                    "site_name": candidate.get("site_name"),
+                    "lexical_score": candidate.get("score") if candidate in lexical_results else None,
+                    "semantic_score": candidate.get("score") if candidate in semantic_results else None,
+                })
+                break
+
+        output.append(record)
+    return output
