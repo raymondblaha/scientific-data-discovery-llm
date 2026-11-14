@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scientific-data-discovery"
+version = "0.1.0"
+description = "Scientific metadata ingestion, storage, search, and evaluation for ARM-style metadata."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "psycopg[binary]>=3.1,<4",
+  "pydantic>=2.7,<3",
+  "python-dotenv>=1.0,<2",
+  "typer>=0.12,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0,<9",
+  "ruff>=0.6,<1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+
+[tool.setuptools.packages.find]
+where = [".", "src"]
+include = ["app*", "scientific_discovery*"]

@@ -1,0 +1,7 @@
+[
+  {"query": "air temperature", "relevant_ids": ["demo:climate-001"]},
+  {"query": "river streamflow", "relevant_ids": ["demo:water-002"]},
+  {"query": "animal GPS movement", "relevant_ids": ["demo:wildlife-003"]},
+  {"query": "soil carbon", "relevant_ids": ["demo:soil-004"]},
+  {"query": "solar radiation", "relevant_ids": ["demo:solar-005"]}
+]
