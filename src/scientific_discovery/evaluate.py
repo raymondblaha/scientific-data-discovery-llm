@@ -23,13 +23,9 @@ def score_query(retrieved_ids: list[str], expected_ids: list[str], k: int) -> di
             reciprocal_rank = 1.0 / index
             break
     return {
-        "precision_at_k": precision,
         f"precision_at_{k}": precision,
-        "recall_at_k": recall,
         f"recall_at_{k}": recall,
-        "hit_at_k": hit,
         f"hit_at_{k}": hit,
-        "mrr_at_k": reciprocal_rank,
         f"mrr_at_{k}": reciprocal_rank,
     }
 
@@ -95,7 +91,7 @@ def evaluate_retrieval(conn, questions_path: str | Path, limit: int = 10) -> dic
 
         split = item.get("split", "development")
         if split in grouped:
-            grouped[split].append(scores["recall_at_k"])
+            grouped[split].append(scores[f"recall_at_{limit}"])
 
         if not expected_ids:
             no_match_questions += 1
