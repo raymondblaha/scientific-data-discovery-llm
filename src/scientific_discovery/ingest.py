@@ -29,7 +29,7 @@ def validate_jsonl(path: Path) -> ValidationResult:
             try:
                 payload = json.loads(raw)
                 if not isinstance(payload, dict):
-                    raise ValueError("each JSONL entry must be an object")
+                    raise TypeError("each JSONL entry must be an object")
 
                 if "dataset_id" in payload:
                     record = Dataset.model_validate(payload)

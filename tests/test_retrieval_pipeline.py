@@ -8,7 +8,9 @@ from app.normalize import normalize_record
 from app.search import filter_date_overlap, search_records
 from app.storage import create_schema, import_records
 from app.validate import validate_record
-from scientific_discovery.db import connect as canonical_connect, initialize as canonical_initialize, upsert as canonical_upsert
+from scientific_discovery.db import connect as canonical_connect
+from scientific_discovery.db import initialize as canonical_initialize
+from scientific_discovery.db import upsert as canonical_upsert
 from scientific_discovery.ingest import validate_jsonl
 from scientific_discovery.search import keyword_search
 
