@@ -9,3 +9,5 @@ htmlcov/
 .pytype/
 .DS_Store
 scientific_data_discovery.egg-info/
+colibri/
+colibri-models/
